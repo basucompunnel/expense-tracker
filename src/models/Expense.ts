@@ -1,9 +1,19 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
 export enum ExpenseCategory {
-  FOOD = "Food",
+  GROCERIES = "Groceries",
+  RESTAURANTS = "Restaurants",
   TRANSPORT = "Transport",
+  FUEL = "Fuel",
+  UTILITIES = "Utilities",
   ENTERTAINMENT = "Entertainment",
+  SHOPPING = "Shopping",
+  HEALTHCARE = "Healthcare",
+  PERSONAL_CARE = "Personal Care",
+  PETS = "Pets",
+  SUBSCRIPTIONS = "Subscriptions",
+  GIFTS = "Gifts",
+  RENT = "Rent",
   OTHER = "Other",
 }
 

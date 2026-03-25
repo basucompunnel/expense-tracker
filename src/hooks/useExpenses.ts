@@ -142,6 +142,43 @@ export const useExpenses = () => {
     []
   );
 
+  // Bulk delete multiple expenses
+  const bulkDelete = useCallback(
+    async (ids: string[]) => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await expenseService.bulkDelete(ids);
+
+        if (!response.success) {
+          setError(response.message);
+          return { success: false, message: response.message };
+        }
+
+        // Update local state optimistically
+        const deletedCount = response.data?.deleted || 0;
+        setExpenses((prevExpenses) =>
+          prevExpenses.filter((expense) => !ids.includes(expense._id))
+        );
+        setTotal((prev) => Math.max(prev - deletedCount, 0));
+
+        return {
+          success: true,
+          message: response.message,
+          data: response.data,
+        };
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Failed to delete expenses";
+        setError(message);
+        return { success: false, message };
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
   // Apply filters and fetch
   const applyFilters = useCallback(
     async (filters: ExpenseFilterOptions) => {
@@ -160,6 +197,7 @@ export const useExpenses = () => {
     create,
     update,
     delete: deleteExpense,
+    bulkDelete,
     applyFilters,
   };
 };

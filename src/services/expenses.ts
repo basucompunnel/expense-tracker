@@ -138,4 +138,78 @@ export const expenseService = {
       };
     }
   },
+
+  // Bulk create multiple expenses
+  bulkCreate: async (
+    expenses: CreateExpenseInput[]
+  ): Promise<{
+    success: boolean;
+    message: string;
+    data?: {
+      created: any[];
+      failed: any[];
+      stats: { total: number; success: number; failed: number };
+    };
+  }> => {
+    try {
+      const response = await fetch(`/api/expenses/bulk`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify(expenses),
+      });
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Bulk create expenses error:", error);
+      return {
+        success: false,
+        message: "Failed to create expenses",
+        data: {
+          created: [],
+          failed: expenses.map((e, i) => ({
+            index: i,
+            data: e,
+            error: "Network error",
+          })),
+          stats: { total: expenses.length, success: 0, failed: expenses.length },
+        },
+      };
+    }
+  },
+
+  // Bulk delete multiple expenses
+  bulkDelete: async (
+    ids: string[]
+  ): Promise<{
+    success: boolean;
+    message: string;
+    data?: {
+      deleted: number;
+      failed: number;
+      failedIds?: string[];
+    };
+  }> => {
+    try {
+      const response = await fetch(`/api/expenses/bulk/delete`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify({ ids }),
+      });
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Bulk delete expenses error:", error);
+      return {
+        success: false,
+        message: "Failed to delete expenses",
+        data: {
+          deleted: 0,
+          failed: ids.length,
+          failedIds: ids,
+        },
+      };
+    }
+  },
 };

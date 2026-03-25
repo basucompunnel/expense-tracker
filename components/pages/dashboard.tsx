@@ -7,12 +7,14 @@ import { ProtectedRoute } from "@/components/wrappers/protected-route";
 import { ExpenseList } from "@/components/expense/expense-list";
 import { FilterPanel } from "@/components/expense/filter-panel";
 import { AddExpenseModal } from "@/components/expense/add-expense-modal";
+import { BulkAddModal } from "@/components/expense/bulk-add-modal";
 import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
-  const { expenses, isLoading, error, fetchExpenses, applyFilters, delete: deleteExpense } =
+  const { expenses, isLoading, error, fetchExpenses, applyFilters, delete: deleteExpense, bulkDelete } =
     useExpenses();
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showBulkModal, setShowBulkModal] = useState(false);
   const [filters, setFilters] = useState<ExpenseFilterOptions>({});
 
   // Load expenses on mount
@@ -39,6 +41,10 @@ export default function Dashboard() {
     await fetchExpenses(filters);
   };
 
+  const handleBulkDelete = async (ids: string[]) => {
+    return await bulkDelete(ids);
+  };
+
   return (
     <ProtectedRoute>
       <div className="flex flex-col flex-1">
@@ -50,12 +56,21 @@ export default function Dashboard() {
                 Track and manage your expenses
               </p>
             </div>
-            <Button
-              onClick={() => setShowAddModal(true)}
-              className="rounded-none"
-            >
-              Add Expense
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => setShowBulkModal(true)}
+                variant="outline"
+                className="rounded-none"
+              >
+                Add Multiple
+              </Button>
+              <Button
+                onClick={() => setShowAddModal(true)}
+                className="rounded-none"
+              >
+                Add Expense
+              </Button>
+            </div>
           </div>
 
           {error && (
@@ -66,10 +81,11 @@ export default function Dashboard() {
 
           <FilterPanel onFilterChange={handleFilterChange} isLoading={isLoading} />
 
-          <ExpenseList 
-            expenses={expenses} 
+          <ExpenseList
+            expenses={expenses}
             isLoading={isLoading}
             onDelete={deleteExpense}
+            onBulkDelete={handleBulkDelete}
             onRefresh={handleRefreshExpenses}
           />
 
@@ -78,6 +94,17 @@ export default function Dashboard() {
               isOpen={showAddModal}
               onClose={() => setShowAddModal(false)}
               onSuccess={handleAddExpenseSuccess}
+            />
+          )}
+
+          {showBulkModal && (
+            <BulkAddModal
+              isOpen={showBulkModal}
+              onClose={() => setShowBulkModal(false)}
+              onSuccess={() => {
+                setShowBulkModal(false);
+                fetchExpenses(filters);
+              }}
             />
           )}
         </main>
