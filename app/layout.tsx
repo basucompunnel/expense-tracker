@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AuthProvider } from "@/src/providers/AuthProvider";
-import { Header } from "@/components/header";
+import { Header } from "@/components/layouts/header";
 
 const ibmPlexSans = IBM_Plex_Sans({
   weight: ["400", "500", "600", "700"],

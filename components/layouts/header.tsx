@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useAuth } from "@/src/providers/AuthProvider";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ThemeToggle } from "../ui/theme-toggle";
 
 export function Header() {
   const { user, logout, isInitialized } = useAuth();
@@ -36,7 +36,7 @@ export function Header() {
                   {user.email}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout}>
+                <DropdownMenuItem className="rounded-none" onClick={logout}>
                   Log Out
                 </DropdownMenuItem>
               </DropdownMenuContent>

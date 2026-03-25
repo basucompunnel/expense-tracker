@@ -23,7 +23,7 @@ export function FormField({
 }: FormFieldProps) {
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="text-sm font-semibold text-foreground">
+      <label htmlFor={id} className="block text-sm font-medium text-foreground">
         {label}
       </label>
       <div className="relative group">
@@ -34,12 +34,12 @@ export function FormField({
         )}
         <Input
           id={id}
-          className={`transition-all duration-200 rounded-xs ${
+          className={`rounded-xs ${
             icon ? "pl-10" : ""
           } ${
             touched && error
-              ? "border-red-400 focus-visible:ring-red-400"
-              : "focus-visible:ring-primary focus-visible:border-primary"
+              ? "border-red-400"
+              : ""
           }`}
           {...props}
         />
