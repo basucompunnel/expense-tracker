@@ -82,7 +82,7 @@ function BulkAddModalRow({
           </p>
         )}
       </td>
-      <td className="py-3 px-4">
+      <td className="py-3 px-4 w-56">
         <Select
           value={row.category}
           onValueChange={(value) =>
@@ -165,7 +165,7 @@ function BulkAddModalTable({
           <tr className="border-b border-border">
             <th className="text-left py-3 px-4 font-semibold">Description</th>
             <th className="text-left py-3 px-4 font-semibold">Amount</th>
-            <th className="text-left py-3 px-4 font-semibold">Category</th>
+            <th className="text-left py-3 px-4 font-semibold w-56">Category</th>
             <th className="text-left py-3 px-4 font-semibold">Date</th>
             <th className="text-left py-3 px-4 font-semibold w-12"></th>
           </tr>
@@ -318,7 +318,7 @@ const generateFakeExpense = (index: number): Omit<BulkRow, "id"> => {
     categories[Math.floor(Math.random() * categories.length)];
   const randomDescription =
     descriptions[Math.floor(Math.random() * descriptions.length)];
-  const randomAmount = (Math.random() * 150 + 5).toFixed(2);
+  const randomAmount = (Math.floor(Math.random() * 91) * 10 + 100).toFixed(2);
   const randomDaysAgo = Math.floor(Math.random() * 30);
   const date = new Date();
   date.setDate(date.getDate() - randomDaysAgo);
@@ -473,7 +473,7 @@ export function BulkAddModal({
       <Card className="rounded-none w-full max-w-4xl max-h-[90vh] overflow-y-auto p-0">
         <BulkAddModalHeader onClose={onClose} />
 
-        <div className="p-6">
+        <div className="p-6 pt-0">
           <BulkAddModalSuccessMessage message={successMessage} />
 
           <BulkAddModalTable

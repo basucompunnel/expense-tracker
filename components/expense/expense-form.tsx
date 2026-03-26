@@ -113,7 +113,7 @@ export function ExpenseForm({
             onChange={(e) => setFieldValue("amount", parseFloat(e.target.value) || 0)}
             error={errors.amount}
             touched={touched.amount}
-            icon={<span className="text-lg font-semibold">$</span>}
+            icon={<span className="text-lg font-semibold">₹</span>}
           />
 
           <div>

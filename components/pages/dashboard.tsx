@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useExpenses } from "@/src/hooks/useExpenses";
 import { ExpenseCategory, ExpenseFilterOptions } from "@/src/types/expense";
 import { ProtectedRoute } from "@/components/wrappers/protected-route";
@@ -8,13 +9,16 @@ import { ExpenseList } from "@/components/expense/expense-list";
 import { FilterPanel } from "@/components/expense/filter-panel";
 import { AddExpenseModal } from "@/components/expense/add-expense-modal";
 import { BulkAddModal } from "@/components/expense/bulk-add-modal";
+import { ExpenseReportModal } from "@/components/expense/expense-report-modal";
 import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
+  const router = useRouter();
   const { expenses, isLoading, error, fetchExpenses, applyFilters, delete: deleteExpense, bulkDelete } =
     useExpenses();
   const [showAddModal, setShowAddModal] = useState(false);
   const [showBulkModal, setShowBulkModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
   const [filters, setFilters] = useState<ExpenseFilterOptions>({});
 
   // Load expenses on mount
@@ -57,6 +61,20 @@ export default function Dashboard() {
               </p>
             </div>
             <div className="flex gap-2">
+              <Button
+                onClick={() => router.push("/budgets")}
+                variant="outline"
+                className="rounded-none"
+              >
+                Budget
+              </Button>
+              <Button
+                onClick={() => setShowReportModal(true)}
+                variant="outline"
+                className="rounded-none"
+              >
+                Report
+              </Button>
               <Button
                 onClick={() => setShowBulkModal(true)}
                 variant="outline"
@@ -105,6 +123,14 @@ export default function Dashboard() {
                 setShowBulkModal(false);
                 fetchExpenses(filters);
               }}
+            />
+          )}
+
+          {showReportModal && (
+            <ExpenseReportModal
+              isOpen={showReportModal}
+              isLoading={isLoading}
+              onClose={() => setShowReportModal(false)}
             />
           )}
         </main>

@@ -37,10 +37,10 @@ function ExpenseCardHeader({
     <div className="flex items-start gap-3">
       <button
         onClick={onSelectChange}
-        className={`mt-1 flex h-5 w-5 items-center justify-center rounded border border-slate-300 dark:border-slate-600 transition-colors ${
+        className={`flex-shrink-0 mt-1 flex h-5 w-5 items-center justify-center rounded border border-slate-300 dark:border-slate-600 transition-colors ${
           isSelected
-            ? "bg-blue-600 border-blue-600 text-white"
-            : "hover:border-blue-400 dark:hover:border-blue-400"
+            ? "bg-black dark:bg-white border-black dark:border-white text-white dark:text-black"
+            : "hover:border-black dark:hover:border-white"
         }`}
         title="Select this expense"
       >
@@ -55,7 +55,7 @@ function ExpenseCardHeader({
           <span className="text-xs text-muted-foreground">{date}</span>
         </div>
       </div>
-      <p className="text-2xl font-bold ml-4">${amount.toFixed(2)}</p>
+      <p className="text-2xl font-bold ml-4">₹{amount.toFixed(0)}</p>
     </div>
   );
 }
@@ -109,7 +109,7 @@ function ExpenseCard({
     <Card
       className={`rounded-xs p-4 transition-all relative h-[120px] ${
         isSelected
-          ? "ring-2 ring-blue-600 shadow-md"
+          ? "ring-2 ring-black dark:ring-white shadow-md"
           : "hover:shadow-md"
       }`}
     >
